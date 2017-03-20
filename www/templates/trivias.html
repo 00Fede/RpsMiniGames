@@ -1,7 +1,8 @@
+<!--Lista de preguntas de la trivia-->
 <ion-view view-title="RPSapp">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="opcion in opciones" href="#/app/playlists/{{playlist.id}}">
+      <ion-item ng-repeat="opcion in opciones" href="#/app/trivias/{{opcion.id}}">
         {{opcion.title}}
       </ion-item>
     </ion-list>

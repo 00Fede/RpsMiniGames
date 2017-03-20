@@ -1,6 +1,6 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ionic'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
 
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -29,6 +29,11 @@ angular.module('starter.controllers', [])
     $scope.modal.show();
   };
 
+  $scope.launchTrivia = function(){
+    console.log("do launchTrivia");
+    $state.go('app.trivia');
+  }
+
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -41,7 +46,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
+.controller('TriviasCtrl', function($scope) {
   $scope.opciones = [
     { title: 'Opcion 1', id: 1 },
     { title: 'Opcion 2', id: 2 },
@@ -52,5 +57,40 @@ angular.module('starter.controllers', [])
   ];
 })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
+.controller('TriviaCtrl', function($scope, $state) {
+
+  $scope.opciones = [
+    { title: 'Opcion 1', id: 1, correctAns: true },
+    { title: 'Opcion 2', id: 2, correctAns: true},
+    { title: 'Opcion 3', id: 3, correctAns: false},
+    { title: 'Opcion 4', id: 4, correctAns: true},
+    { title: 'Opcion 5', id: 5,correctAns: false },
+    { title: 'Opcion 6', id: 6,correctAns: true }
+  ];
+  //solo se corre la primera vez
+  $scope.pregunta = $scope.opciones[getRandomInt(0,$scope.opciones.length)];
+
+  $scope.doAnswer = function(ans){
+    console.log("respuesta obtenida " + ans);
+    if($scope.pregunta.correctAns==ans){
+      //Pasa a la proxima pregunta
+      console.log("respuesta correcta!!");
+      let nextQ = getRandomInt(0,$scope.opciones.length); //prox pregunta aleatoria
+      while($scope.pregunta.id-1 == nextQ){ //por si la pregunta es la misma a la anterior
+        nextQ = getRandomInt(0,$scope.opciones.length);
+      }
+      $scope.pregunta = $scope.opciones[nextQ]; //setea nueva pregunta
+    }else{
+      //TODO: Aviso de fallaste en el UI
+      console.log("Fallaste!!!!");
+    }
+
+  }
+
 });
+
+//calcula entero random entre min y max, min inclusive, max excluido
+function getRandomInt(min, max) {
+  console.log("random calculado");
+  return Math.floor(Math.random() * (max - min)) + min;
+}
