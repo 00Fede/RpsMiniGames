@@ -1,15 +1,16 @@
 <ion-view  view-title="Trivia">
-  <ion-content style="background-color:#ffe699">
+  <ion-content style="background-color:#ffeecc">
   	<center>
   	 <div id="particles-js">
-	  	<div style="width:70%; height: 100%">
+	  	<div style="width:70%; height: 100%" id="divTrivia">
 	  		<br/><br/>
 		    <h1 class="animated bounce" style="font-size: 40px">PREGUNTA:</h1>
 		    <br/><br/>
-		    <h1 class="animated tada"> {{pregunta.title}} </h1>
+		    <h1 id="pregunta" class="animated tada"> {{pregunta.title}} </h1>
 		    <br/><br/>
-		    <button class="button button-block button-balanced " ng-click="doAnswer(true)">Verdadero</button>
-		    <button  class="button button-block button-assertive" ng-click="doAnswer(false)">Falso</button>
+		    <img class="animated bounce" src="" />
+		    <button id="botonVerdadero" class="button button-block button-balanced animated rubberBand" ng-click="animar(); doAnswer(true)">Verdadero</button>
+		    <button id="botonFalso" class="button button-block button-assertive animated rubberBand" ng-click="animar(); doAnswer(false)">Falso</button>
 	    </div>
 	    <!-- particles.js container -->  
 	  </div> <!-- stats - count particles --> 	   

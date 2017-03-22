@@ -71,21 +71,30 @@ angular.module('starter.controllers', ['ionic'])
   $scope.pregunta = $scope.opciones[getRandomInt(0,$scope.opciones.length)];
 
   $scope.doAnswer = function(ans){
+    document.getElementById("pregunta").className = "animated tada";
+    document.getElementById("divTrivia").className = "";
     console.log("respuesta obtenida " + ans);
     if($scope.pregunta.correctAns==ans){
       //Pasa a la proxima pregunta
+      document.getElementById("pregunta").className = "";
       console.log("respuesta correcta!!");
+      console.log(document.getElementById("pregunta").className);
       let nextQ = getRandomInt(0,$scope.opciones.length); //prox pregunta aleatoria
       while($scope.pregunta.id-1 == nextQ){ //por si la pregunta es la misma a la anterior
-        nextQ = getRandomInt(0,$scope.opciones.length);
+        nextQ = getRandomInt(0,$scope.opciones.length); 
       }
       $scope.pregunta = $scope.opciones[nextQ]; //setea nueva pregunta
+      document.getElementById("pregunta").className = "animated bounce";
     }else{
       //TODO: Aviso de fallaste en el UI
+      document.getElementById("divTrivia").className = "animated shake";
       console.log("Fallaste!!!!");
     }
+    
 
   }
+  $scope.animar =function(){}
+    document.getElementById("pregunta").className = "";
 
 });
 
@@ -94,3 +103,4 @@ function getRandomInt(min, max) {
   console.log("random calculado");
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
