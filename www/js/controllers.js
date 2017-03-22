@@ -64,8 +64,8 @@ angular.module('starter.controllers', ['ionic'])
     { title: 'Opcion 2', id: 2, correctAns: true},
     { title: 'Opcion 3', id: 3, correctAns: false},
     { title: 'Opcion 4', id: 4, correctAns: true},
-    { title: 'Opcion 5', id: 5,correctAns: false },
-    { title: 'Opcion 6', id: 6,correctAns: true }
+    { title: 'Opcion 5', id: 5, correctAns: false },
+    { title: 'Opcion 6', id: 6, correctAns: true }
   ];
   //solo se corre la primera vez
   $scope.pregunta = $scope.opciones[getRandomInt(0,$scope.opciones.length)];
