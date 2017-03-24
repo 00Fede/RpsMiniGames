@@ -10,11 +10,12 @@
     </ion-nav-bar>
     <ion-nav-view name="menuContent"></ion-nav-view>
   </ion-side-menu-content>
+  <input type="text" id="usernameLogin" ng-show="false" value="nn">
   <ion-side-menu side="left" id="menuTrivia">
     <ion-header-bar class="bar-stable">
       <h1 class="title">RPSapp Menu</h1>
     </ion-header-bar>
-    <ion-content>
+    <ion-content> 
       <ion-list>
         <ion-item ng-show="permiso" menu-close ng-click="login()">
           Login
