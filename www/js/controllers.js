@@ -69,38 +69,43 @@ angular.module('starter.controllers', ['ionic'])
 .controller('TriviaCtrl', function($scope, $state) {
 
   $scope.opciones = [
-    { title: 'Opcion 1', id: 1, correctAns: true },
-    { title: 'Opcion 2', id: 2, correctAns: true},
-    { title: 'Opcion 3', id: 3, correctAns: false},
-    { title: 'Opcion 4', id: 4, correctAns: true},
-    { title: 'Opcion 5', id: 5, correctAns: false },
-    { title: 'Opcion 6', id: 6, correctAns: true }
+    { title: 'Opcion 1', id: 1, correctAns: true, hint: 'hint opcion 1' },
+    { title: 'Opcion 2', id: 2, correctAns: true, hint: 'hint opcion 2' },
+    { title: 'Opcion 3', id: 3, correctAns: false, hint: 'hint opcion 3' },
+    { title: 'Opcion 4', id: 4, correctAns: true, hint: 'hint opcion 4' },
+    { title: 'Opcion 5', id: 5, correctAns: false, hint: 'hint opcion 5'  },
+    { title: 'Opcion 6', id: 6, correctAns: true, hint: 'hint opcion 6'  }
   ];
   let cont = 0;
   $scope.opciones = shuffle($scope.opciones); //reordena el array
   $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
   $scope.doAnswer = function(ans){
 
+    $scope.answered = true;
+
     document.getElementById("pregunta").className = "animated tada";
     document.getElementById("triviaDiv").className = "";
     console.log("respuesta obtenida " + ans);
 
     if($scope.pregunta.correctAns==ans){
-      $scope.finish= cont==$scope.opciones.length; //verifica sino hay mas preguntas
       document.getElementById("pregunta").className = "";
       console.log("respuesta correcta!!");
       console.log(document.getElementById("pregunta").className);
-
-      $scope.pregunta = $scope.opciones[cont++];
 
       document.getElementById("pregunta").className = "animated bounce";
     }else{
       document.getElementById("triviaDiv").className = "animated shake";
       console.log("Fallaste!!!!");
     }
-  }
+  };
   $scope.animar =function(){
     document.getElementById("pregunta").className = "";
+  };
+
+  $scope.continuar = function(){
+    $scope.answered=!$scope.answered;
+    $scope.finish= cont==$scope.opciones.length; //verifica si no hay mas preguntas
+    $scope.pregunta = $scope.opciones[cont++];
   }
 
 });
@@ -122,4 +127,4 @@ function shuffle(array) {
   }
 
   return array;
-}  
+}
