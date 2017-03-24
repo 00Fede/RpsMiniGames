@@ -66,6 +66,7 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 .controller('TriviaCtrl', function($scope, $state) {
+  $scope.puntaje = 0;
   $scope.username = document.getElementById("usernameLogin").value
   $scope.opciones = [
     { title: 'Opcion 1', id: 1, correctAns: true, hint: 'hint opcion 1' },
@@ -81,12 +82,13 @@ angular.module('starter.controllers', ['ionic'])
   $scope.doAnswer = function(ans){
 
     $scope.answered = true;
-
+    $scope.botonesInactivos(true);
     document.getElementById("pregunta").className = "animated tada";
     document.getElementById("triviaDiv").className = "";
     console.log("respuesta obtenida " + ans);
 
     if($scope.pregunta.correctAns==ans){
+      $scope.puntaje = $scope.puntaje + 1;
       document.getElementById("pregunta").className = "";
       console.log("respuesta correcta!!");
       console.log(document.getElementById("pregunta").className);
@@ -106,6 +108,12 @@ angular.module('starter.controllers', ['ionic'])
     $scope.answered=!$scope.answered;
     $scope.finish= cont==$scope.opciones.length; //verifica si no hay mas preguntas
     $scope.pregunta = $scope.opciones[cont++];
+    $scope.botonesInactivos(false);  
+    
+  }
+  $scope.botonesInactivos = function(opt){
+    document.getElementById("botonVerdadero").disabled = opt;
+    document.getElementById("botonFalso").disabled = opt;
   }
 
 });

@@ -4,9 +4,9 @@
   	<center>
       <div ng-show="finish" id=finishDiv>
         <br/><br/>
-        <h1 class="animated bounce" style="font-size: 40px; font-style: italic; font-family:cursive;">Has finalizado la trivia de hoy!</h1>
+        <h1 class="animated bounce" style="font-size: 40px; font-style: italic; font-family:cursive;">{{loginData.username}}, has finalizado la trivia de hoy!</h1>
         <br/><br/><br/><br/>
-        <h1 class="animated bounce" style="font-size: 40px; font-style: italic; font-family:cursive;">{{loginData.username}} puntaje: Y</h1>
+        <h1 class="animated bounce" style="font-size: 40px; font-style: italic; font-family:cursive;"> puntaje: {{puntaje}}</h1>
       </div>
 	  <div ng-show="!finish" style="width:70%; height: 100%; background-position: bottom;" id="triviaDiv">
 	  		<br/><br/>
