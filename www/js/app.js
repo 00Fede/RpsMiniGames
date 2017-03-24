@@ -68,7 +68,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         controller: 'TriviaCtrl'
       }
     }
+  })
+  .state('app.privacidad', {
+    url: '/privacidad',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/privacidad.html',
+        controller: 'TriviaCtrl'
+      }
+    }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('app/info');
+  $urlRouterProvider.otherwise('/app/privacidad');
 });

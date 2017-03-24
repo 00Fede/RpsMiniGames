@@ -2,6 +2,8 @@ angular.module('starter.controllers', ['ionic'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
 
+
+
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -11,7 +13,7 @@ angular.module('starter.controllers', ['ionic'])
 
   // Form data for the login modal
   $scope.loginData = {};
-
+  $scope.permiso = false;
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
@@ -34,6 +36,13 @@ angular.module('starter.controllers', ['ionic'])
     $state.go('app.trivia');
   }
 
+  $scope.privacidad =function(){
+    $scope.permiso = true;
+    console.log("Terminos y condiciones aceptados");
+    //$state.go('app.info');
+    $state.get('app.info');
+    //href="#/app/info"
+  }
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
@@ -90,9 +99,9 @@ angular.module('starter.controllers', ['ionic'])
       console.log("Fallaste!!!!");
     }
   }
-
-  $scope.animar =function(){}
+  $scope.animar =function(){
     document.getElementById("pregunta").className = "";
+  }
 
 });
 
@@ -113,4 +122,4 @@ function shuffle(array) {
   }
 
   return array;
-}
+}  
