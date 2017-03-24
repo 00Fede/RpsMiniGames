@@ -1,5 +1,6 @@
 angular.module('starter.controllers', ['ionic'])
 
+
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
 
 
@@ -39,14 +40,12 @@ angular.module('starter.controllers', ['ionic'])
   $scope.privacidad =function(){
     $scope.permiso = true;
     console.log("Terminos y condiciones aceptados");
-    //$state.go('app.info');
-    $state.get('app.info');
-    //href="#/app/info"
   }
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
-
+    console.log($scope.loginData.username);
+    document.getElementById("usernameLogin").value = $scope.loginData.username;
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
     $timeout(function() {
@@ -67,7 +66,7 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 .controller('TriviaCtrl', function($scope, $state) {
-
+  $scope.username = document.getElementById("usernameLogin").value
   $scope.opciones = [
     { title: 'Opcion 1', id: 1, correctAns: true, hint: 'hint opcion 1' },
     { title: 'Opcion 2', id: 2, correctAns: true, hint: 'hint opcion 2' },
@@ -99,6 +98,7 @@ angular.module('starter.controllers', ['ionic'])
     }
   };
   $scope.animar =function(){
+    console.log($scope.username);
     document.getElementById("pregunta").className = "";
   };
 
