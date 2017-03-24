@@ -67,40 +67,50 @@ angular.module('starter.controllers', ['ionic'])
     { title: 'Opcion 5', id: 5, correctAns: false },
     { title: 'Opcion 6', id: 6, correctAns: true }
   ];
-  //solo se corre la primera vez
-  $scope.pregunta = $scope.opciones[getRandomInt(0,$scope.opciones.length)];
-
+  let cont = 0;
+  $scope.opciones = shuffle($scope.opciones); //reordena el array
+  $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
   $scope.doAnswer = function(ans){
+
     document.getElementById("pregunta").className = "animated tada";
-    document.getElementById("divTrivia").className = "";
+    document.getElementById("triviaDiv").className = "";
     console.log("respuesta obtenida " + ans);
+
     if($scope.pregunta.correctAns==ans){
-      //Pasa a la proxima pregunta
+      $scope.finish= cont==$scope.opciones.length; //verifica sino hay mas preguntas
       document.getElementById("pregunta").className = "";
       console.log("respuesta correcta!!");
       console.log(document.getElementById("pregunta").className);
-      let nextQ = getRandomInt(0,$scope.opciones.length); //prox pregunta aleatoria
-      while($scope.pregunta.id-1 == nextQ){ //por si la pregunta es la misma a la anterior
-        nextQ = getRandomInt(0,$scope.opciones.length); 
-      }
-      $scope.pregunta = $scope.opciones[nextQ]; //setea nueva pregunta
+
+      $scope.pregunta = $scope.opciones[cont++];
+
       document.getElementById("pregunta").className = "animated bounce";
     }else{
-      //TODO: Aviso de fallaste en el UI
-      document.getElementById("divTrivia").className = "animated shake";
+      document.getElementById("triviaDiv").className = "animated shake";
       console.log("Fallaste!!!!");
     }
-    
-
   }
+
   $scope.animar =function(){}
     document.getElementById("pregunta").className = "";
 
 });
 
-//calcula entero random entre min y max, min inclusive, max excluido
-function getRandomInt(min, max) {
-  console.log("random calculado");
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
 
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}

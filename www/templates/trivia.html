@@ -2,7 +2,11 @@
   <div class="background" ></div>
   <ion-content>
   	<center>
-	  	<div style="width:70%; height: 100%; background-position: bottom;" id="divTrivia">
+      <div ng-show="finish" id=finishDiv>
+        <br/><br/>
+        <h1 class="animated bounce" style="font-size: 40px; font-style: italic; font-family:cursive;">Has finalizado la trivia de hoy!</h1>
+      </div>
+	  	<div ng-show="!finish" style="width:70%; height: 100%; background-position: bottom;" id="triviaDiv">
 	  		<br/><br/>
 		    <h1 class="animated bounce" style="font-size: 40px; font-style: italic; font-family:cursive;">PREGUNTA:</h1>
 		    <br/><br/>
@@ -12,7 +16,7 @@
 		    <button id="botonVerdadero" class="button button-block button-balanced animated rubberBand" ng-click="animar(); doAnswer(true)">Verdadero</button>
 		    <button id="botonFalso" class="button button-block button-assertive animated rubberBand" ng-click="animar(); doAnswer(false)">Falso</button>
 		    <br/><br/><br/><br/><br/><br/>
-	    </div>	   
-    </center>
+	    </div>
+  </center>
   </ion-content>
 </ion-view>
