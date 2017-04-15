@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ionic'])
+angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
@@ -65,7 +65,21 @@ angular.module('starter.controllers', ['ionic'])
   ];
 })
 
-.controller('TriviaCtrl', function($scope, $state) {
+.controller('TriviaCtrl', function($scope, $state, $ionicPush) {
+
+  //registra el dispositivo para aceptar notificaciones push. se hace al abrir app.
+  $ionicPush.register().then(function(t){
+      return $ionicPush.saveToken(t);
+  }).then(function(t){
+      console.log('Token saved: '+t.token);
+  });   
+
+  //escucha el evento cuando entra una notificacion push
+  $scope.$on('cloud:push:notification', function(event, data) {
+    var msg = data.message;
+    alert(msg.title + ': ' + msg.text);
+  });
+
   $scope.puntaje = 0;
   $scope.username = document.getElementById("usernameLogin").value
   $scope.opciones = [

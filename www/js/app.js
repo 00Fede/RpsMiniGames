@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform,$ionicPush) {
 
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -22,8 +22,28 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   });
 })
+.config(function($stateProvider, $urlRouterProvider,$ionicCloudProvider) {
 
-.config(function($stateProvider, $urlRouterProvider) {
+  //Se inicializa el servicio ionic cloud
+  $ionicCloudProvider.init({
+    "core":{
+      "app_id":"db1ae96e"
+    },
+    "push":{
+      "sender_id":"559008558816",
+      "pluginConfig":{
+        "ios":{
+          "badge":true,
+          "sound":true
+        },
+        "android":{
+          "iconColor":"#343434"
+        }
+      }
+    }
+  });
+
+
   $stateProvider
 
     .state('app', {
