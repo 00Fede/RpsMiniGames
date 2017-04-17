@@ -14,6 +14,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
   // Form data for the login modal
   $scope.loginData = {};
+  $scope.puntajeSemana = {};
   $scope.permiso = false;
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -43,14 +44,34 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   }
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
+
     console.log('Doing login', $scope.loginData);
     console.log($scope.loginData.username);
     document.getElementById("usernameLogin").value = $scope.loginData.username;
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
-    $timeout(function() {
+    /*$timeout(function() {
       $scope.closeLogin();
-    }, 1000);
+    }, 1000);*/
+    var http = new XMLHttpRequest();
+    var url = " https://rpsnode.herokuapp.com/api/instrument?usuario="+$scope.loginData.username;
+    http.open("GET", url, false);
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          usuario= http.responseText;
+            usuario = JSON.parse(usuario);
+        }
+    }
+    http.send(null);
+    for(var i = 0 ; i < usuario.length; i++){
+        console.log(usuario[i].usuario);
+        if($scope.loginData.username === usuario[i].usuario && $scope.loginData.password === usuario[i].cedula){
+        alert("Estas logeado papu");
+        $scope.closeLogin();
+      }
+    }
   };
 })
 
@@ -129,6 +150,22 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     document.getElementById("botonVerdadero").disabled = opt;
     document.getElementById("botonFalso").disabled = opt;
   }
+  $scope.tablaPuntajes = function(){
+    //alert("Voy a cargar puntajes");
+    var http = new XMLHttpRequest();
+    var url = " https://rpsnode.herokuapp.com/api/score/week/1";
+    http.open("GET", url, false);
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          puntajeSemana = http.responseText;
+          $scope.puntajeSemana = JSON.parse(puntajeSemana);
+        }
+    }
+    http.send(null);
+    console.log($scope.puntajeSemana);
+    }
 
 });
 

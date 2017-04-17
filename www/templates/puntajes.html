@@ -3,6 +3,28 @@
   <ion-content>
   <center>
     <h1>PUNTAJES DE LA SEMANA</h1>
+    <div align="center" class="w3-container">
+			<label>FILTRAR POR: <input ng-model="searchText" ></label>
+		</div>
+		<div class="w3-container" align="center">
+			<table class="table table-hover" style="width:70%">
+				<thead>
+			      <tr>
+			        <th><center>Usuario</center></th>
+			        <th><center>Puntaje</center></th>
+			      </tr>
+			    </thead>
+			    <tbody>
+					<tr style="width:80%"  ng-repeat="puntajes in puntajeSemana | filter:searchText">
+						<td><center>{{puntajes.username}}</center></td>
+						<td><center>{{puntajes.semana1}}</center></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<form ng-submit="tablaPuntajes()">
+    	<button style="width:50%" class="button button-block button-balanced" type="submit">cargar puntajes</button>
+    </form>
   </center>
   </ion-content>
 </ion-view>

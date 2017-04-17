@@ -66,7 +66,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/puntajes',
       views: {
         'menuContent': {
-          templateUrl: 'templates/puntajes.html'
+          templateUrl: 'templates/puntajes.html',
+          controller: 'TriviaCtrl'
         }
       }
     })
