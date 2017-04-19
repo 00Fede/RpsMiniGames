@@ -1,0 +1,19 @@
+<ion-modal-view>
+<div class="background"></div>
+  <ion-header-bar>
+    <h1 class="title">Cerrar sesión</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeCerrarSession()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doLogout()">
+      <div class="list">
+          <center><p>¿Deseas cerrar tu sesión?</p></center>
+          <button class="button button-block button-balanced" type="submit">Cerrar sesión</button>
+          <button class="button button-block button-positive" ng-click="closeCerrarSession()" type="button" >Cancelar</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

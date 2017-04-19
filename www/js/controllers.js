@@ -13,35 +13,96 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   //});
 
   // Form data for the login modal
+  $scope.usuarioActivo = null;
   $scope.loginData = {};
+  $scope.registroData = {};
   $scope.puntajeSemana = {};
   $scope.permiso = false;
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
+  }).then(function(modalLogin) {
+    $scope.modalLogin = modalLogin;
+  });
+
+  // Create register modal
+  $ionicModal.fromTemplateUrl('templates/registro.html', {
+    scope: $scope
+  }).then(function(modalRegistro) {
+    $scope.modalRegistro = modalRegistro;
+  });
+
+  // create cerrar sesion modal
+  $ionicModal.fromTemplateUrl('templates/cerrarSesion.html', {
+    scope: $scope
+  }).then(function(modalCerrarSesion) {
+    $scope.modalCerrarSesion = modalCerrarSesion;
   });
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
-    $scope.modal.hide();
+    $scope.modalLogin.hide();
   };
 
   // Open the login modal
   $scope.login = function() {
-    $scope.modal.show();
+    if($scope.usuarioActivo === null){
+      $scope.modalLogin.show();
+    }
+    else{
+      $scope.cerrarSesion();
+    }
+  };
+
+  $scope.openRegistro = function(){
+    console.log("Abrir registro");
+    $scope.modalRegistro.show();
+  };
+
+  $scope.closeRegistro = function(){
+    $scope.modalRegistro.hide();
+    window.location="#/app/info";
   };
 
   $scope.launchTrivia = function(){
     console.log("do launchTrivia");
     $state.go('app.trivia');
-  }
+  };
 
   $scope.privacidad =function(){
     $scope.permiso = true;
     console.log("Terminos y condiciones aceptados");
-  }
+  };
+
+  $scope.doRegistro = function(){
+    $scope.closeLogin();
+    console.log("Doing registro");
+    if ($scope.registroData.password != $scope.registroData.password2){
+        alert("Las contraseñas no coinciden");
+        return 0;
+    }
+    else{
+      console.log("Manda datos de registro con un POST bien sessi");
+      $scope.usuarioActivo = $scope.registroData.username;
+      $scope.closeRegistro();
+      window.location="#/app/info";
+    }
+  };
+
+  $scope.doLogout = function(){
+    $scope.usuarioActivo = null;
+    $scope.closeCerrarSession();
+    window.location="#/app/info";
+  };
+
+  $scope.cerrarSesion= function(){
+    $scope.modalCerrarSesion.show();
+  };
+
+  $scope.closeCerrarSession = function(){
+    $scope.modalCerrarSesion.hide();
+    window.location="#/app/info";
+  };
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
 
@@ -69,7 +130,9 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
         console.log(usuario[i].usuario);
         if($scope.loginData.username === usuario[i].usuario && $scope.loginData.password === usuario[i].cedula){
         alert("Estas logeado papu");
+        $scope.usuarioActivo = $scope.loginData.username;
         $scope.closeLogin();
+        window.location="#/app/info";
       }
     }
   };

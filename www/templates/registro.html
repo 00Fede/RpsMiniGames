@@ -1,0 +1,33 @@
+<ion-modal-view>
+<div class="background"></div>
+  <ion-header-bar>
+    <h1 class="title">Registrar</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeRegistrar()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doRegistro()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Usuario</span>
+          <input type="text" ng-model="registroData.username">
+        </label>
+        <p/>
+        <label class="item item-input">
+          <span class="input-label">Contraseña</span>
+          <input type="password" ng-model="registroData.password">
+        </label>
+        <p/>
+        <label class="item item-input">
+          <span class="input-label">Confirmar Contraseña</span>
+          <input type="password" ng-model="registroData.password2">
+        </label>
+        <p/>
+        <label class="item">
+          <button class="button button-block button-balanced" type="submit">Registrar</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>
