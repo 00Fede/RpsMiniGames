@@ -210,8 +210,14 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     
   }
   $scope.botonesInactivos = function(opt){
-    document.getElementById("botonVerdadero").disabled = opt;
-    document.getElementById("botonFalso").disabled = opt;
+    if(opt === false){
+      document.getElementById("botonVerdadero").style.display='block';
+      document.getElementById("botonFalso").style.display='block';
+    }
+    else{
+      document.getElementById("botonVerdadero").style.display='none';
+      document.getElementById("botonFalso").style.display='none';
+    }
   }
   $scope.tablaPuntajes = function(){
     //alert("Voy a cargar puntajes");

@@ -26,11 +26,12 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-splashscreen",
     {
-      "variables":{
-        "SENDER_ID":"559008558816"
+      "variables": {
+        "SENDER_ID": "559008558816"
       },
-      "locator":"phonegap-plugin-push"
-    }
+      "locator": "phonegap-plugin-push"
+    },
+    "phonegap-plugin-push@~1.10.2"
   ],
   "cordovaPlatforms": []
 }
