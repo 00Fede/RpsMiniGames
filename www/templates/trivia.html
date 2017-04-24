@@ -17,13 +17,11 @@
 		    <img class="animated bounce" src="" />
 		    <button id="botonVerdadero" class="button button-block button-balanced animated rubberBand" ng-click="animar(); doAnswer(true)">Verdadero</button>
 		    <button id="botonFalso" class="button button-block button-assertive animated rubberBand" ng-click="animar(); doAnswer(false)">Falso</button>
-        <br/><br/>
           <span ng-if="answered" class="animate-if">
             {{pregunta.hint}}
           </span>
           <br/><br/>
           <button ng-if="answered" id="botonContinuar" class="button button-positive rubberBand" ng-click="continuar()">Continuar</button>
-		    <br/><br/><br/><br/><br/><br/>
 	   </div>
   </center>
   </ion-content>

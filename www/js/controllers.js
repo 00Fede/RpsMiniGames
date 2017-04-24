@@ -72,6 +72,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.privacidad =function(){
     $scope.permiso = true;
     console.log("Terminos y condiciones aceptados");
+    window.location="#/app/info";
   };
 
   $scope.doRegistro = function(){
