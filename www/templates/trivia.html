@@ -4,22 +4,23 @@
   	<center>
       <div ng-show="finish" id=finishDiv>
         <br/><br/>
-        <h1 class="animated bounce" style="font-size: 24px; font-style: Gloria Hallelujah; font-family:cursive;">{{usuarioActivo}}, has finalizado la trivia de hoy!</h1>
+        <h1 class="animated bounce" style="font-size: 24px; font-style: Gloria Hallelujah; font-family:cursive;">{{usuarioActivo.username}}, has finalizado la trivia de hoy!</h1>
         <br/><br/><br/><br/>
         <h1 class="animated bounce" style="font-size: 30px; font-style: Gloria Hallelujah; font-family:cursive;"> puntaje: {{puntaje}}</h1>
       </div>
 	  <div ng-show="!finish" style="width:70%; height: 100%; background-position: bottom;" id="triviaDiv">
 	  		<br/><br/>
-		    <img src="../img/PreguntaBanner.jpg"></img>
+		    <img src="../img/PreguntaBanner.png"></img>
 		    <br/><br/>
-		    <h3 id="pregunta" class="animated tada"> {{pregunta.title}} </h3>
+		    <h3 id="pregunta" class="animated tada"> {{pregunta.pregunta}} </h3>
 		    <br/><br/>
 		    <img class="animated bounce" src="" />
-		    <button id="botonVerdadero" class="button button-block button-balanced animated rubberBand" ng-click="animar(); doAnswer(true)">Verdadero</button>
-		    <button id="botonFalso" class="button button-block button-assertive animated rubberBand" ng-click="animar(); doAnswer(false)">Falso</button>
-          <span ng-if="answered" class="animate-if">
+		    <button id="botonVerdadero" class="button button-block button-balanced animated rubberBand" ng-click="animar(); doAnswer('verdadero')">Verdadero</button>
+		    <button id="botonFalso" class="button button-block button-assertive animated rubberBand" ng-click="animar(); doAnswer('falso')">Falso</button>
+          <p ng-if="answered" class="animate-if">
             {{pregunta.hint}}
-          </span>
+          </p>
+          <img src = {{imagen}} ng-if="answered"></img>
           <br/><br/>
           <button ng-if="answered" id="botonContinuar" class="button button-positive rubberBand" ng-click="continuar()">Continuar</button>
 	   </div>

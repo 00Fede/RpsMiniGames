@@ -9,7 +9,7 @@
   <ion-content>
     <form ng-submit="doLogout()">
       <div class="list">
-          <center><p>{{usuarioActivo}}, ¿Deseas cerrar tu sesión?</p></center>
+          <p>{{usuarioActivo.username}}, ¿Deseas cerrar tu sesión?</p>
           <button class="button button-block button-balanced" type="submit">Cerrar sesión</button>
           <button class="button button-block button-assertive" ng-click="closeCerrarSession()" type="button" >Cancelar</button>
         </label>

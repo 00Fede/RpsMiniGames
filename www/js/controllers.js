@@ -18,6 +18,13 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.registroData = {};
   $scope.puntajeSemana = {};
   $scope.permiso = false;
+  $scope.imagenSaludo = "../img/RPS1.png";
+  $scope.imagenRegano = "../img/RPS2.png";
+  $scope.imagenIncorrecto = "../img/RPS3.png";
+  $scope.imagenCorrecto = "../img/RPS4.png";
+  $scope.imagenExplicando = "../img/RPS5.png";
+  $scope.imagenNeutral = "../img/RPS6.png";
+  $scope.imagen = "";
   // Create the login modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
@@ -47,6 +54,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   // Open the login modal
   $scope.login = function() {
     if($scope.usuarioActivo === null){
+      console.log($scope.usuarioActivo);
       $scope.modalLogin.show();
     }
     else{
@@ -77,18 +85,65 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
   $scope.doRegistro = function(){
     $scope.closeLogin();
+    existe = $scope.usuarioExiste($scope.registroData.usuario);
     console.log("Doing registro");
-    if ($scope.registroData.password != $scope.registroData.password2){
+    if(existe === true ){
+        alert("El usuario ya se encuentra registrado, por favor escoger otro");
+        return 0;
+    }
+    else if ($scope.registroData.password != $scope.registroData.password2){
         alert("Las contraseñas no coinciden");
         return 0;
     }
     else{
-      console.log("Manda datos de registro con un POST bien sessi");
-      $scope.usuarioActivo = $scope.registroData.username;
+      $scope.enviarRegistro($scope.registroData.usuario, $scope.registroData.password);
       $scope.closeRegistro();
       window.location="#/app/info";
     }
   };
+
+  $scope.usuarioExiste = function(usuario){
+    console.log("verificar que usuario exista");
+    var http = new XMLHttpRequest();
+    var url = " https://rpsnode.herokuapp.com/api/user/"+usuario;
+    http.open("GET", url, false);
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          existe= http.responseText;
+          existe = JSON.parse(existe);
+        }
+    }
+    http.send(null);
+    console.log(existe);
+    if (existe.length != 0){
+      return true;
+      console.log("el usuario ya existe maifren");
+    }
+    else{
+      return false;
+      console.log("el usuario no existe maifren");
+    }
+  }
+
+  $scope.enviarRegistro =function(usuario,password){
+    var nuevoUsuario = new Object();
+    nuevoUsuario.username = usuario;
+    nuevoUsuario.password = password;
+    var params = JSON.stringify(nuevoUsuario);
+    var http = new XMLHttpRequest();
+    var url = " https://rpsnode.herokuapp.com/api/user";
+    http.open("POST", url, false);
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          alert("Usuario registrado exitosamente");
+        }
+    }
+    http.send(params);
+  }
 
   $scope.doLogout = function(){
     $scope.usuarioActivo = null;
@@ -105,8 +160,24 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     window.location="#/app/info";
   };
   // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
+  $scope.cargarPreguntas = function(){
+    var http = new XMLHttpRequest();
+    var url = " https://rpsnode.herokuapp.com/api/question";
+    http.open("GET", url, false);
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+          preguntas= http.responseText;
+          preguntas = JSON.parse(preguntas);
+        }
+    }
+    http.send(null);
+    return preguntas;
+  }
 
+  $scope.doLogin = function() {
+    var usuario = null;
     console.log('Doing login', $scope.loginData);
     console.log($scope.loginData.username);
     document.getElementById("usernameLogin").value = $scope.loginData.username;
@@ -116,25 +187,28 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
       $scope.closeLogin();
     }, 1000);*/
     var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/instrument?usuario="+$scope.loginData.username;
+    var url = " https://rpsnode.herokuapp.com/api/user/"+$scope.loginData.username;
     http.open("GET", url, false);
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
           usuario= http.responseText;
-            usuario = JSON.parse(usuario);
+          console.log(usuario);
+          usuario = JSON.parse(usuario);
         }
     }
     http.send(null);
-    for(var i = 0 ; i < usuario.length; i++){
-        console.log(usuario[i].usuario);
-        if($scope.loginData.username === usuario[i].usuario && $scope.loginData.password === usuario[i].cedula){
-        alert("Estas logeado papu");
-        $scope.usuarioActivo = $scope.loginData.username;
-        $scope.closeLogin();
-        window.location="#/app/info";
-      }
+    console.log("objeto usuario: "+usuario);
+    if(usuario[0].password === $scope.loginData.password){
+      $scope.usuarioActivo = usuario[0];
+      console.log("El usuario activo: "+$scope.usuarioActivo);
+      $scope.closeLogin();
+      window.location="#/app/info";
+    }
+    else{
+      console.log(usuario[0].password);
+      console.log("Usuario o contraseña incorrectos");
     }
   };
 })
@@ -167,15 +241,8 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
   $scope.puntaje = 0;
   $scope.username = document.getElementById("usernameLogin").value
-  $scope.opciones = [
-    { title: 'Opcion 1', id: 1, correctAns: true, hint: 'hint opcion 1' },
-    { title: 'Opcion 2', id: 2, correctAns: true, hint: 'hint opcion 2' },
-    { title: 'Opcion 3', id: 3, correctAns: false, hint: 'hint opcion 3' },
-    { title: 'Opcion 4', id: 4, correctAns: true, hint: 'hint opcion 4' },
-    { title: 'Opcion 5', id: 5, correctAns: false, hint: 'hint opcion 5'  },
-    { title: 'Opcion 6', id: 6, correctAns: true, hint: 'hint opcion 6'  }
-  ];
   let cont = 0;
+  $scope.opciones = $scope.cargarPreguntas();
   $scope.opciones = shuffle($scope.opciones); //reordena el array
   $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
   $scope.doAnswer = function(ans){
@@ -186,16 +253,18 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     document.getElementById("triviaDiv").className = "";
     console.log("respuesta obtenida " + ans);
 
-    if($scope.pregunta.correctAns==ans){
+    if($scope.pregunta.respuesta==ans){
       $scope.puntaje = $scope.puntaje + 1;
       document.getElementById("pregunta").className = "";
       console.log("respuesta correcta!!");
+      $scope.imagen = $scope.imagenCorrecto;
       console.log(document.getElementById("pregunta").className);
 
       document.getElementById("pregunta").className = "animated bounce";
     }else{
       document.getElementById("triviaDiv").className = "animated shake";
       console.log("Fallaste!!!!");
+      $scope.imagen = $scope.imagenIncorrecto;
     }
   };
   $scope.animar =function(){
@@ -235,6 +304,9 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     }
     http.send(null);
     console.log($scope.puntajeSemana);
+    }
+    $scope.actualizarPuntajes = function(){
+      
     }
 
 });
