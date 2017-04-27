@@ -18,10 +18,10 @@
 }
 
 #menuTrivia {
-	background-image: url('../img/rps.png'); 
+	background-image: url('../img/RPS1.png'); 
 	background-repeat:no-repeat; 
 	background-position: center; 
-	background-size: 100%;
+	background-size: 30%;
 }
 
 p {

@@ -5,7 +5,20 @@
     <h1>Información</h1>
     <br/><br/>
     <div style="width:80%">
-    <p>NEWS prro</p>
+    <div class="w3-container" align="center">
+			<table class="table table-hover" style="width:70%">
+				<thead>
+			      <tr>
+			        <th><center>Anuncio</center></th>
+			      </tr>
+			    </thead>
+			    <tbody>
+					<tr style="width:80%"  ng-repeat="new in news | filter:searchText">
+						<td><center>{{new.new}}</center></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 </div>
   </center>
   </ion-content>
