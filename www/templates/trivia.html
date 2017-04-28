@@ -8,10 +8,9 @@
         <br/><br/><br/><br/>
         <h1 class="animated bounce" style="font-size: 30px; font-style: Gloria Hallelujah; font-family:cursive;"> puntaje: {{puntaje}}</h1>
       </div>
-	  <div ng-show="!finish" style="width:70%; height: 100%; background-position: bottom;" id="triviaDiv">
-	  		<br/><br/>
-		    <img src="../img/PreguntaBanner.png"></img>
-		    <br/><br/>
+	  <div ng-show="!finish" style="width:90%; height: 100%; background-position: bottom;" id="triviaDiv">
+	  		
+		    <!--<img src="img/PreguntaBanner.png"></img>-->
 		    <h3 id="pregunta" class="animated tada"> {{pregunta.pregunta}} </h3>
 		    <br/><br/>
 		    <img class="animated bounce" src="" />
@@ -21,8 +20,8 @@
             {{pregunta.hint}}
           </p>
           <img src = {{imagen}} ng-if="answered"></img>
-          <br/><br/>
-          <button ng-if="answered" id="botonContinuar" class="button button-positive rubberBand" ng-click="continuar()">Continuar</button>
+          <br/>
+          <button ng-if="answered" id="botonContinuar" class="button button-block button-positive rubberBand" ng-click="continuar()">Continuar</button>
 	   </div>
   </center>
   </ion-content>

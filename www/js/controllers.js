@@ -18,12 +18,12 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.registroData = {};
   $scope.puntajeSemana = {};
   $scope.permiso = false;
-  $scope.imagenSaludo = "../img/RPS1.png";
-  $scope.imagenRegano = "../img/RPS2.png";
-  $scope.imagenIncorrecto = "../img/RPS3.png";
-  $scope.imagenCorrecto = "../img/RPS4.png";
-  $scope.imagenExplicando = "../img/RPS5.png";
-  $scope.imagenNeutral = "../img/RPS6.png";
+  $scope.imagenSaludo = "img/RPS1.png";
+  $scope.imagenRegano = "img/RPS2.png";
+  $scope.imagenIncorrecto = "img/RPS3.png";
+  $scope.imagenCorrecto = "img/RPS4.png";
+  $scope.imagenExplicando = "img/RPS5.png";
+  $scope.imagenNeutral = "img/RPS6.png";
   $scope.imagen = "";
   $scope.news = cargarNoticias();
   // Create the login modal that we will use later
