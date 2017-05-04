@@ -13,11 +13,11 @@
 		    <!--<img src="img/PreguntaBanner.png"></img>-->
 		    <h3 id="pregunta" class="animated tada"> {{pregunta.pregunta}} </h3>
 		    <br/><br/>
-		    <img class="animated bounce" src="" />
-		    <button id="botonVerdadero" class="button button-block button-balanced animated rubberBand" ng-click="animar(); doAnswer('verdadero')">Verdadero</button>
-		    <button id="botonFalso" class="button button-block button-assertive animated rubberBand" ng-click="animar(); doAnswer('falso')">Falso</button>
+        <img id="botonVerdadero" class="animated rubberBand" src={{botonUp}} ng-click="animar();doAnswer('verdadero')" style="margin-right: 10px;width: 25vw"/>
+        <img id="botonFalso" class="animated rubberBand" src={{botonDown}} ng-click="animar();doAnswer('falso')"
+        style="margin-left: 10px;width: 25vw"/>
           <p ng-if="answered" class="animate-if">
-            {{pregunta.hint}}
+          {{pregunta.hint}}
           </p>
           <img src = {{imagen}} ng-if="answered"></img>
           <br/>

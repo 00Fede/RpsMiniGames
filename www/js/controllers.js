@@ -22,6 +22,8 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.imagenRegano = "img/RPS2.png";
   $scope.imagenIncorrecto = "img/RPS3.png";
   $scope.imagenCorrecto = "img/RPS4.png";
+  $scope.botonUp = "img/up1.png";
+  $scope.botonDown = "img/down1.png";
   $scope.imagenExplicando = "img/RPS5.png";
   $scope.imagenNeutral = "img/RPS6.png";
   $scope.imagen = "";
@@ -93,7 +95,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     $state.go('app.trivia');
   };
 
-  $scope.privacidad =function(){
+  $scope.privacidad = function(){
     $scope.permiso = true;
     console.log("Terminos y condiciones aceptados");
     window.location="#/app/info";
@@ -258,6 +260,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.opciones = $scope.cargarPreguntas();
   $scope.opciones = shuffle($scope.opciones); //reordena el array
   $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
+
   $scope.doAnswer = function(ans){
 
     $scope.answered = true;
@@ -280,6 +283,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
       $scope.imagen = $scope.imagenIncorrecto;
     }
   };
+
   $scope.animar =function(){
     console.log($scope.username);
     document.getElementById("pregunta").className = "";
@@ -288,14 +292,13 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.continuar = function(){
     $scope.answered=!$scope.answered;
     $scope.finish= cont==$scope.opciones.length; //verifica si no hay mas preguntas
+    if(!$scope.finish) $scope.botonesInactivos(false);  
     $scope.pregunta = $scope.opciones[cont++];
-    $scope.botonesInactivos(false);  
-    
   }
   $scope.botonesInactivos = function(opt){
     if(opt === false){
-      document.getElementById("botonVerdadero").style.display='block';
-      document.getElementById("botonFalso").style.display='block';
+      document.getElementById("botonVerdadero").style.display='initial';
+      document.getElementById("botonFalso").style.display='initial';
     }
     else{
       document.getElementById("botonVerdadero").style.display='none';

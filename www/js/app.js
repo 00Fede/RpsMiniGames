@@ -11,6 +11,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+/**
+    if(window.Connection) {
+                if(navigator.connection.type != Connection.NONE) {
+                    $ionicPopup.confirm({
+                        title: "Error de conexión",
+                        content: "Parece que no tienes Internet."
+                    })
+                    .then(function(result) {
+                        if(!result) {
+                            ionic.Platform.exitApp();
+                        }
+                    });
+                }
+    }*/
+
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
