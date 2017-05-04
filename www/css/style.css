@@ -24,6 +24,20 @@
 	background-size: 30%;
 }
 
+#udea-logo {
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 2s;
+    width: 40vw;
+    display: block;
+}
+
+#rps-logo {
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 2s;
+    width: 70vw;
+    display: block;
+}
+
 p {
     text-align: justify;
     text-justify: inter-word;
