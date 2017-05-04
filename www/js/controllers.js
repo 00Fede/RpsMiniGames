@@ -22,8 +22,8 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.imagenRegano = "img/RPS2.png";
   $scope.imagenIncorrecto = "img/RPS3.png";
   $scope.imagenCorrecto = "img/RPS4.png";
-  $scope.botonUp = "img/up1.png";
-  $scope.botonDown = "img/down1.png";
+  $scope.botonUp = "img/up.png";
+  $scope.botonDown = "img/down.png";
   $scope.imagenExplicando = "img/RPS5.png";
   $scope.imagenNeutral = "img/RPS6.png";
   $scope.imagen = "";
