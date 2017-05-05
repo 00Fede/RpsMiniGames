@@ -53,22 +53,6 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.closeLogin = function() {
     $scope.modalLogin.hide();
   };
-  $scope.cargarNoticias = function(){
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/news";
-    http.open("GET", url, false);
-    //Send the proper header information along with the request
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          noticias= http.responseText;
-          noticias = JSON.parse(noticias);
-        }
-    }
-    http.send(null);
-    return noticias;
-  };
-
   // Open the login modal
   $scope.login = function() {
     if($scope.usuarioActivo === null){
@@ -103,7 +87,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
   $scope.doRegistro = function(){
     $scope.closeLogin();
-    existe = $scope.usuarioExiste($scope.registroData.username);
+    existe = usuarioExiste($scope.registroData.username);
     console.log("Doing registro");
     if(existe === true ){
         alert("El usuario ya se encuentra registrado, por favor escoger otro");
@@ -114,51 +98,11 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
         return 0;
     }
     else{
-      $scope.enviarRegistro($scope.registroData.username, $scope.registroData.password);
+      enviarRegistro($scope.registroData.username, $scope.registroData.password);
       $scope.closeRegistro();
       window.location="#/app/info";
     }
   };
-
-  $scope.usuarioExiste = function(usuario){
-    console.log("verificar que usuario exista");
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/user/"+usuario;
-    http.open("GET", url, false);
-    //Send the proper header information along with the request
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          existe= http.responseText;
-          existe = JSON.parse(existe);
-        }
-    }
-    http.send(null);
-    console.log(existe);
-    if (existe.length != 0){
-      return true;
-      console.log("el usuario ya existe maifren");
-    }
-    else{
-      return false;
-      console.log("el usuario no existe maifren");
-    }
-  }
-
-  $scope.enviarRegistro =function(usuario,password){
-    var params = "username="+usuario+"&password="+password;
-    console.log(params);
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/user";
-    http.open("POST", url, false);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {
-        if(http.readyState == 4 && http.status == 200) {
-          alert("Usuario registrado exitosamente");
-        }
-    }
-    http.send(params);
-  }
 
   $scope.doLogout = function(){
     $scope.usuarioActivo = null;
@@ -174,56 +118,25 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     $scope.modalCerrarSesion.hide();
     window.location="#/app/info";
   };
-  // Perform the login action when the user submits the login form
-  $scope.cargarPreguntas = function(){
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/question";
-    http.open("GET", url, false);
-    //Send the proper header information along with the request
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          preguntas= http.responseText;
-          preguntas = JSON.parse(preguntas);
-        }
-    }
-    http.send(null);
-    return preguntas;
-  };
-
+  
   $scope.doLogin = function() {
     var usuario = null;
     console.log('Doing login', $scope.loginData);
     console.log($scope.loginData.username);
     document.getElementById("usernameLogin").value = $scope.loginData.username;
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    /*$timeout(function() {
-      $scope.closeLogin();
-    }, 1000);*/
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/user/"+$scope.loginData.username;
-    http.open("GET", url, false);
-    //Send the proper header information along with the request
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          usuario= http.responseText;
-          console.log(usuario);
-          usuario = JSON.parse(usuario);
-        }
-    }
-    http.send(null);
+    usuario = logearUsuario($scope.loginData.username);
     console.log("objeto usuario: "+usuario);
-    if(usuario[0].password === $scope.loginData.password){
-      $scope.usuarioActivo = usuario[0];
-      console.log("El usuario activo: "+$scope.usuarioActivo);
-      $scope.closeLogin();
-      window.location="#/app/info";
-    }
-    else{
-      console.log(usuario[0].password);
-      console.log("Usuario o contraseña incorrectos");
+    if(usuario != null){
+      if(usuario.password === $scope.loginData.password){
+        $scope.usuarioActivo = usuario;
+        console.log("El usuario activo: "+$scope.usuarioActivo);
+        $scope.closeLogin();
+        window.location="#/app/info";
+      }
+      else{
+        console.log(usuario.password);
+        console.log("Usuario o contraseña incorrectos");
+      }
     }
   };
 })
@@ -257,7 +170,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.puntaje = 0;
   $scope.username = document.getElementById("usernameLogin").value
   let cont = 0;
-  $scope.opciones = $scope.cargarPreguntas();
+  $scope.opciones = cargarPreguntas();
   $scope.opciones = shuffle($scope.opciones); //reordena el array
   $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
 
@@ -306,37 +219,22 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     }
   }
   $scope.tablaPuntajes = function(){
-    //alert("Voy a cargar puntajes");
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/score/week/1";
-    http.open("GET", url, false);
-    //Send the proper header information along with the request
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          puntajeSemana = http.responseText;
-          $scope.puntajeSemana = JSON.parse(puntajeSemana);
-        }
+    $scope.puntajeSemana=tablaPuntajes();
     }
-    http.send(null);
-    console.log($scope.puntajeSemana);
+  $scope.actualizarPuntajes = function(){
+    console.log("Voy a actualizarPuntajes");
+    console.log($scope.usuarioActivo.id+$scope.puntaje);
+    puntaje = puntajeDeUsuario($scope.usuarioActivo.id);
+    console.log("Usuario activo "+$scope.usuarioActivo.username);
+    console.log(puntaje+" -- "+$scope.puntaje);
+    if(puntaje === null || puntaje.length === "" ){
+      añadirPuntajeAUsuario($scope.usuarioActivo.id, $scope.puntaje);
     }
-    $scope.actualizarPuntajes = function(){
-      var http = new XMLHttpRequest();
-      var url = "https://rpsnode.herokuapp.com/api/score/update/week/1";
-      params = "iduser="+$scope.usuarioActivo.id+"&puntaje="+$scope.puntajeSemana;
-      http.open("PUT", url, false);
-      //Send the proper header information along with the request
-      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {//Call a function when the state changes.
-          if(http.readyState == 4 && http.status == 200) {
-            console.log("Puntaje actualizado!");
-          }
-      }
-      http.send(params);
-      console.log($scope.puntajeSemana);
+    else if(puntaje < $scope.puntaje){
+      console.log("actualizar puntajes");
+      actualizarPuntajesAPI($scope.usuarioActivo.id,$scope.puntaje);
     }
-
+  }
 });
 
 function shuffle(array) {
@@ -358,18 +256,3 @@ function shuffle(array) {
   return array;
 }
 
-function cargarNoticias(){
-    var http = new XMLHttpRequest();
-    var url = " https://rpsnode.herokuapp.com/api/news";
-    http.open("GET", url, false);
-    //Send the proper header information along with the request
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {//Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-          noticias= http.responseText;
-          noticias = JSON.parse(noticias);
-        }
-    }
-    http.send(null);
-    return noticias;
-  };

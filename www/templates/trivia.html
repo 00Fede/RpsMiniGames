@@ -7,6 +7,8 @@
         <h1 class="animated bounce" style="font-size: 24px; font-style: Gloria Hallelujah; font-family:cursive;">{{usuarioActivo.username}}, has finalizado la trivia de hoy!</h1>
         <br/><br/><br/><br/>
         <h1 class="animated bounce" style="font-size: 30px; font-style: Gloria Hallelujah; font-family:cursive;"> puntaje: {{puntaje}}</h1>
+        <br/><br/>
+        <button id="botonEnviarPuntaje" class="button button-block button-positive rubberBand" ng-click="actualizarPuntajes()">Enviar puntaje!</button>
       </div>
 	  <div ng-show="!finish" style="width:90%; height: 100%; background-position: bottom;" id="triviaDiv">
 	  		
