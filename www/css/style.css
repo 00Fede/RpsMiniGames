@@ -29,13 +29,19 @@
     -webkit-animation-duration: 2s;
     width: 40vw;
     display: block;
+    margin: 10px;
 }
 
 #rps-logo {
-    -webkit-animation-iteration-count: infinite;
     -webkit-animation-duration: 2s;
     width: 70vw;
     display: block;
+}
+
+#commons-logo {
+    width: 20vw;
+    display: block;
+    margin: 15px;
 }
 
 p {
