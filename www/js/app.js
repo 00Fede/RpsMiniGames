@@ -1,30 +1,13 @@
 // Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
+/**
+* Modulo de angular 1.5 para RPSMiniGames, se encuentra como atributo en el <body> del index.html
+* starter.controllers se encuentra en controllers.js
+*/
 angular.module('starter', ['ionic', 'starter.controllers'])
 
 .run(function($ionicPlatform,$ionicPush) {
 
   $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-/**
-    if(window.Connection) {
-                if(navigator.connection.type != Connection.NONE) {
-                    $ionicPopup.confirm({
-                        title: "Error de conexión",
-                        content: "Parece que no tienes Internet."
-                    })
-                    .then(function(result) {
-                        if(!result) {
-                            ionic.Platform.exitApp();
-                        }
-                    });
-                }
-    }*/
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -32,7 +15,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
     }
     if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
   });
@@ -58,16 +40,15 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   });
 
-
+  /** Configuracion de los estados de la app*/
   $stateProvider
-
-    .state('app', {
+  .state('app', {
     url: '/app',
     abstract: true,
     templateUrl: 'templates/menu.html',
     controller: 'AppCtrl'
   })
-
+  // vista de informacion
   .state('app.info', {
     url: '/info',
     views: {
@@ -76,26 +57,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
-
+  // Vista de puntajes
   .state('app.puntajes', {
-      url: '/puntajes',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/puntajes.html',
-          controller: 'TriviaCtrl'
-        }
+    url: '/puntajes',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/puntajes.html',
+        controller: 'TriviaCtrl'
       }
-    })
-    .state('app.trivias', {
-      url: '/trivias',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/trivias.html',
-          controller: 'TriviasCtrl'
-        }
-      }
-    })
-
+    }
+  })
+  // Vista de trivias
   .state('app.trivia', {
     url: '/trivia',
     views: {
@@ -105,22 +77,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       }
     }
   })
+  // Vista de privacidad
   .state('app.privacidad', {
     url: '/privacidad',
     views: {
       'menuContent': {
-        templateUrl: 'templates/privacidad.html',
-        controller: 'TriviaCtrl'
+        templateUrl: 'templates/privacidad.html'
       }
     }
   })
-
+  // Vista de acerca de
   .state('app.acerca', {
     url: '/acerca',
     views: {
       'menuContent': {
         templateUrl: 'templates/acerca.html',
-        controller: 'TriviasCtrl'
       }
     }
   });

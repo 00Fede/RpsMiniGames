@@ -1,0 +1,38 @@
+INFO Rico Pero Saludable
+
+rpsudea@gmail.com
+p455w0rd
+
+ionic
+rpsudea - username
+rpsudea@gmail.com - mail
+54ludud34 - pass
+
+
+contraseña .keystore
+pupibe13
+
+contraseña para RPS-UDEA clave.
+123456
+
+----- Crear keystore
+ keytool -genkey -v -keystore RPS-REL-KEY.keystore -alias RPS-UDEA -keyalg RSA -keysize 2048 -validity 10000
+Generando par de claves RSA de 2.048 bits para certificado autofirmado (SHA256withRSA) con una validez de 10.000 días para: CN=RPSUDEA, OU=UDEA, O=UDEA, L=MEDELLIN, ST=ANTIOQUIA, C=CO
+-----
+
+---- Firmar apk
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ./keys/RPS-REL-KEY.keystore ./platforms/android/build/outputs/apk/android-release-unsigned.apk RPS-UDEA
+
+zipalign -v 4 android-release-unsigned.apk HelloWorld.apk
+
+~ verificar apk firmada
+apksigner verify HelloWorld.apk
+-------
+
+
+Firebase
+- Server-Key: AAAAgieBruA:APA91bHhyw25F2klWvD1NuB4C_djFff435tnvLhkU5_LtY1hxvn3J13smDASNATV7fTmhCE-r4HxKxXsKGCoS-T9p6YyrskyBCu-KFKB8Nrbmxnb1VBRzHLP8-Zx9uZNPI4VU1nnl1l1
+- Sender-ID: 559008558816
+
+Ionic Cloud
+- App-ID: db1ae96e

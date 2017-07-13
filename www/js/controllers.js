@@ -1,18 +1,13 @@
+/**
+* Este modulo contiene los controladores para las vistas de la app
+*/
 angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
-
+/**
+* Sirve de controlador a todas las vistas de la aplicacion
+*/
 .controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
 
-
-
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
   $scope.usuarioActivo = null;
   $scope.loginData = {};
   $scope.registroData = {};
@@ -28,14 +23,17 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.imagenNeutral = "img/RPS6.png";
   $scope.imagen = "";
   $scope.news = cargarNoticias();
-  // Create the login modal that we will use later
+
+  // Creacion del modal login
   $ionicModal.fromTemplateUrl('templates/login.html', {
+    // el scope para el modal es el mismo para la app
     scope: $scope
   }).then(function(modalLogin) {
+    // controlador del login
     $scope.modalLogin = modalLogin;
   });
 
-  // Create register modal
+  // Crear Modal de registro
   $ionicModal.fromTemplateUrl('templates/registro.html', {
     scope: $scope
   }).then(function(modalRegistro) {
@@ -56,10 +54,8 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   // Open the login modal
   $scope.login = function() {
     if($scope.usuarioActivo === null){
-      console.log($scope.usuarioActivo);
       $scope.modalLogin.show();
-    }
-    else{
+    }else{
       $scope.cerrarSesion();
     }
   };
@@ -79,10 +75,10 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     $state.go('app.trivia');
   };
 
+  /**Cuando se aceptan los terminos*/
   $scope.privacidad = function(){
     $scope.permiso = true;
-    console.log("Terminos y condiciones aceptados");
-    window.location="#/app/info";
+    $state.go('app.info');
   };
 
   $scope.doRegistro = function(){
@@ -141,18 +137,13 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   };
 })
 
-.controller('TriviasCtrl', function($scope) {
-  $scope.opciones = [
-    { title: 'Opcion 1', id: 1 },
-    { title: 'Opcion 2', id: 2 },
-    { title: 'Opcion 3', id: 3 },
-    { title: 'Opcion 4', id: 4 },
-    { title: 'Opcion 5', id: 5 },
-    { title: 'Opcion 6', id: 6 }
-  ];
-})
-
 .controller('TriviaCtrl', function($scope, $state, $ionicPush) {
+  $scope.puntaje = 0;
+  $scope.username = document.getElementById("usernameLogin").value
+  let cont = 0;
+  $scope.opciones = cargarPreguntas();
+  $scope.opciones = shuffle($scope.opciones); //reordena el array
+  $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
 
   //registra el dispositivo para aceptar notificaciones push. se hace al abrir app.
   $ionicPush.register().then(function(t){
@@ -167,12 +158,6 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     alert(msg.title + ': ' + msg.text);
   });
   
-  $scope.puntaje = 0;
-  $scope.username = document.getElementById("usernameLogin").value
-  let cont = 0;
-  $scope.opciones = cargarPreguntas();
-  $scope.opciones = shuffle($scope.opciones); //reordena el array
-  $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
 
   $scope.doAnswer = function(ans){
 
