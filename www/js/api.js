@@ -152,7 +152,7 @@ function añadirPuntajeAUsuario(id, puntaje){
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function() {
         if(http.readyState == 4 && http.status == 200) {
-          alert("Usuario registrado exitosamente en tabla puntaje");
+          alert("Tu puntaje ha sido actualizado");
         }
     }
     http.send(params);

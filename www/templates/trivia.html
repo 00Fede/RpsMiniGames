@@ -8,23 +8,23 @@
         <br/><br/><br/><br/>
         <h1 class="animated bounce" style="font-size: 30px; font-style: Gloria Hallelujah; font-family:cursive;"> puntaje: {{puntaje}}</h1>
         <br/><br/>
-        <button id="botonEnviarPuntaje" class="button button-block button-positive rubberBand" ng-click="actualizarPuntajes()">Enviar puntaje!</button>
+        <button id="botonEnviarPuntaje" class="button button-block button-positive rubberBand" ng-click="enviarPuntaje()">Enviar puntaje!</button>
       </div>
-	  <div ng-show="!finish" style="width:90%; height: 100%; background-position: bottom;" id="triviaDiv">
-	  		
-		    <!--<img src="img/PreguntaBanner.png"></img>-->
-		    <h3 id="pregunta" class="animated tada"> {{pregunta.pregunta}} </h3>
-		    <br/><br/>
-        <img id="botonVerdadero" class="animated rubberBand" src={{botonUp}} ng-click="animar();doAnswer('verdadero')" style="margin-right: 10px;width: 25vw"/>
-        <img id="botonFalso" class="animated rubberBand" src={{botonDown}} ng-click="animar();doAnswer('falso')"
-        style="margin-left: 10px;width: 25vw"/>
-          <p ng-if="answered" class="animate-if">
+      <div ng-show="!finish" style="width:90%; height: 100%; background-position: bottom;" id="triviaDiv">
+        <h3 id="pregunta" class="animated tada"> {{pregunta.pregunta}} </h3>
+        <br/><br/>
+        <div id="botones" ng-show="!answered">
+          <img id="botonVerdadero" class="animated rubberBand" src={{botonUp}} ng-click="doAnswer('verdadero')" style="margin-right: 10px;width: 25vw"/>
+          <img id="botonFalso" class="animated rubberBand" src={{botonDown}} ng-click="doAnswer('falso')"
+          style="margin-left: 10px;width: 25vw"/>
+        </div>
+        <p ng-if="answered" class="animate-if">
           {{pregunta.hint}}
-          </p>
-          <img src = {{imagen}} ng-if="answered"></img>
-          <br/>
-          <button ng-if="answered" id="botonContinuar" class="button button-block button-positive rubberBand" ng-click="continuar()">Continuar</button>
-	   </div>
-  </center>
+        </p>
+        <img src={{imagen}} ng-if="answered"></img>
+        <br/>
+        <button ng-if="answered" id="botonContinuar" class="button button-block button-positive rubberBand" ng-click="continuar()">Continuar</button>
+      </div>
+    </center>
   </ion-content>
 </ion-view>

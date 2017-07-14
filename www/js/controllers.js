@@ -6,7 +6,7 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
 /**
 * Sirve de controlador a todas las vistas de la aplicacion
 */
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $state, $ionicPush) {
 
   $scope.usuarioActivo = null;
   $scope.loginData = {};
@@ -15,13 +15,10 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
   $scope.permiso = false;
   $scope.imagenSaludo = "img/RPS1.png";
   $scope.imagenRegano = "img/RPS2.png";
-  $scope.imagenIncorrecto = "img/RPS3.png";
-  $scope.imagenCorrecto = "img/RPS4.png";
-  $scope.botonUp = "img/up.png";
-  $scope.botonDown = "img/down.png";
+
+
   $scope.imagenExplicando = "img/RPS5.png";
   $scope.imagenNeutral = "img/RPS6.png";
-  $scope.imagen = "";
   $scope.news = cargarNoticias();
 
   // Creacion del modal login
@@ -81,17 +78,20 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     $state.go('app.info');
   };
 
+  /**
+  * Hace el registro con los datos recibidos por el usuario
+  */
   $scope.doRegistro = function(){
     $scope.closeLogin();
     existe = usuarioExiste($scope.registroData.username);
     console.log("Doing registro");
     if(existe === true ){
-        alert("El usuario ya se encuentra registrado, por favor escoger otro");
-        return 0;
+      alert("El usuario ya se encuentra registrado, por favor escoger otro");
+      return 0;
     }
     else if ($scope.registroData.password != $scope.registroData.password2){
-        alert("Las contraseñas no coinciden");
-        return 0;
+      alert("Las contraseñas no coinciden");
+      return 0;
     }
     else{
       enviarRegistro($scope.registroData.username, $scope.registroData.password);
@@ -115,6 +115,9 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
     window.location="#/app/info";
   };
   
+  /**
+  * Ejecuta el login con los valores obtenidos por el usuario
+  */
   $scope.doLogin = function() {
     var usuario = null;
     console.log('Doing login', $scope.loginData);
@@ -127,6 +130,8 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
         $scope.usuarioActivo = usuario;
         console.log("El usuario activo: "+$scope.usuarioActivo);
         $scope.closeLogin();
+        // Registra el usuario para recibir notificacion push
+        registrarIonicPush($ionicPush, $scope);
         window.location="#/app/info";
       }
       else{
@@ -139,88 +144,80 @@ angular.module('starter.controllers', ['ionic','ionic.cloud'])
 
 .controller('TriviaCtrl', function($scope, $state, $ionicPush) {
   $scope.puntaje = 0;
-  $scope.username = document.getElementById("usernameLogin").value
+  $scope.username = document.getElementById("usernameLogin").value;
   let cont = 0;
-  $scope.opciones = cargarPreguntas();
-  $scope.opciones = shuffle($scope.opciones); //reordena el array
+  $scope.opciones = shuffle(cargarPreguntas()); //reordena el array
   $scope.pregunta = $scope.opciones[cont++]; //primer elemento del array randomizad
+  $scope.botonUp = "img/up.png";
+  $scope.botonDown = "img/down.png";
+  $scope.imagenIncorrecto = "img/RPS3.png";
+  $scope.imagenCorrecto = "img/RPS4.png";
 
-  //registra el dispositivo para aceptar notificaciones push. se hace al abrir app.
-  $ionicPush.register().then(function(t){
-      return $ionicPush.saveToken(t);
-  }).then(function(t){
-      console.log('Token saved: '+t.token);
-  });   
-
-  //escucha el evento cuando entra una notificacion push
-  $scope.$on('cloud:push:notification', function(event, data) {
-    var msg = data.message;
-    alert(msg.title + ': ' + msg.text);
-  });
-  
-
+  /**
+  * Recibe respuesta del usuario y verifica si esta es correcta o no
+  */
   $scope.doAnswer = function(ans){
-
     $scope.answered = true;
-    $scope.botonesInactivos(true);
-    document.getElementById("pregunta").className = "animated tada";
-    document.getElementById("triviaDiv").className = "";
     console.log("respuesta obtenida " + ans);
-
-    if($scope.pregunta.respuesta==ans){
-      $scope.puntaje = $scope.puntaje + 1;
-      document.getElementById("pregunta").className = "";
-      console.log("respuesta correcta!!");
-      $scope.imagen = $scope.imagenCorrecto;
-      console.log(document.getElementById("pregunta").className);
-
-      document.getElementById("pregunta").className = "animated bounce";
-    }else{
-      document.getElementById("triviaDiv").className = "animated shake";
-      console.log("Fallaste!!!!");
-      $scope.imagen = $scope.imagenIncorrecto;
-    }
-  };
-
-  $scope.animar =function(){
-    console.log($scope.username);
-    document.getElementById("pregunta").className = "";
+    let correct = $scope.pregunta.respuesta==ans;
+    document.getElementById("pregunta").className = "animated " + (correct ? "bounce" : "shake");
+    $scope.imagen = correct ? $scope.imagenCorrecto : $scope.imagenIncorrecto;
+    if(correct) $scope.puntaje = $scope.puntaje + 1;
   };
 
   $scope.continuar = function(){
+    document.getElementById("pregunta").className = ""
     $scope.answered=!$scope.answered;
     $scope.finish= cont==$scope.opciones.length; //verifica si no hay mas preguntas
-    if(!$scope.finish) $scope.botonesInactivos(false);  
     $scope.pregunta = $scope.opciones[cont++];
   }
-  $scope.botonesInactivos = function(opt){
-    if(opt === false){
-      document.getElementById("botonVerdadero").style.display='initial';
-      document.getElementById("botonFalso").style.display='initial';
-    }
-    else{
-      document.getElementById("botonVerdadero").style.display='none';
-      document.getElementById("botonFalso").style.display='none';
-    }
-  }
-  $scope.tablaPuntajes = function(){
-    $scope.puntajeSemana=tablaPuntajes();
-    }
-  $scope.actualizarPuntajes = function(){
+  /**
+  * Envia puntaje realizado por el usuario. Solo lo envia si puntaje es nul o
+  * o es mayor a un puntaje previo.
+  */
+  $scope.enviarPuntaje = function(){
     console.log("Voy a actualizarPuntajes");
+    if($scope.usuarioActivo == null){
+      alert("Para poder subir tu puntaje debes estar logueado.");
+      $state.go("app.info");
+      finish = false;
+      return;
+    }
     console.log($scope.usuarioActivo.id+$scope.puntaje);
     puntaje = puntajeDeUsuario($scope.usuarioActivo.id);
     console.log("Usuario activo "+$scope.usuarioActivo.username);
     console.log(puntaje+" -- "+$scope.puntaje);
-    if(puntaje === null || puntaje.length === "" ){
+    if(puntaje === null || puntaje.length === "" || puntaje<$scope.puntaje){
       añadirPuntajeAUsuario($scope.usuarioActivo.id, $scope.puntaje);
     }
-    else if(puntaje < $scope.puntaje){
-      console.log("actualizar puntajes");
-      actualizarPuntajesAPI($scope.usuarioActivo.id,$scope.puntaje);
-    }
+    $state.go("app.info");
+    
   }
+  
+})
+
+.controller('PuntajeCtrl', function($scope, $state){
+  //Carga puntajes
+  $scope.tablaPuntajes = function(){
+    $scope.puntajeSemana=tablaPuntajes();
+  }
+  
 });
+
+function registrarIonicPush(ionicPush, alcance){
+  //registra el dispositivo para aceptar notificaciones push. se hace al abrir app.
+  ionicPush.register().then(function(t){
+    return ionicPush.saveToken(t);
+  }).then(function(t){
+    console.log('Token saved: '+t.token);
+  });   
+
+  //escucha el evento cuando entra una notificacion push
+  alcance.$on('cloud:push:notification', function(event, data) {
+    var msg = data.message;
+    alert(msg.title + ': ' + msg.text);
+  });
+}
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;

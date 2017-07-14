@@ -63,7 +63,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     views: {
       'menuContent': {
         templateUrl: 'templates/puntajes.html',
-        controller: 'TriviaCtrl'
+        controller: 'PuntajeCtrl'
       }
     }
   })
